@@ -28,7 +28,6 @@ ORDER BY
 
 SELECT
   *,
-  TO_BASE(history_int, 2) AS history_in_binary,
-  BIT_COUNT(history_int, 32) AS num_days_active
+  TO_BASE(history_int, 2) AS history_in_binary
 FROM
   date_list_int
