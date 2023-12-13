@@ -53,8 +53,6 @@ WITH
       SUM(rating) / COUNT(*) AS avg_rating
     FROM
       current_year cy
-    WHERE
-      film_num <= 5
     GROUP BY
       actor,
       actor_id
@@ -70,9 +68,9 @@ COALESCE(ly.films, ARRAY[]) ||
    COALESCE(fr.avg_rating, ly.yearly_rating) AS yearly_rating,
     (
     CASE
-      WHEN COALESCE(fr.avg_rating, ly.yearly_rating) > 20 THEN 'star'
-      WHEN COALESCE(fr.avg_rating, ly.yearly_rating) > 15 THEN 'good'
-      WHEN COALESCE(fr.avg_rating, ly.yearly_rating) > 10 THEN 'average'
+      WHEN COALESCE(fr.avg_rating, ly.yearly_rating) > 8 THEN 'star'
+      WHEN COALESCE(fr.avg_rating, ly.yearly_rating) > 7 THEN 'good'
+      WHEN COALESCE(fr.avg_rating, ly.yearly_rating) > 6 THEN 'average'
       ELSE 'bad'
     END
   ) AS quality_class,

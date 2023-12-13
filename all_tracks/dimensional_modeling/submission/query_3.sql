@@ -4,7 +4,7 @@ CREATE TABLE
     start_date INTEGER,
     end_date INTEGER,
     quality_class VARCHAR,
-    is_active BOOLEAN,
+    is_active INTEGER,
     current_year INTEGER
   )
 WITH
