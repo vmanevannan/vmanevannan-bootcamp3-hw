@@ -63,7 +63,7 @@ supervisor_name
 date_joined : date supervisor joined org.
 
 ## Pipeline Diagram
-[Staples_sales_ERD.pdf](Staples_sales_ERD.pdf)
+![staples_sales_ERD.png](staples_sales_ERD.png)
 
 ## Data Schemas/Modeling
 
