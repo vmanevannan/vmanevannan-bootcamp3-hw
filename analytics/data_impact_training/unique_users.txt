@@ -1,0 +1,73 @@
+CREATE TABLE
+  zachwilson.lab_temp AS
+WITH
+  conformed AS (
+    SELECT
+      *,
+      CASE
+        WHEN host LIKE '%dataengineer%' THEN 'DataEngineer.io'
+        WHEN host LIKE '%zachwilson%' THEN 'ZachWilson.tech'
+        WHEN host LIKE '%eczachly%' THEN 'EcZachly.com'
+        ELSE 'Other'
+      END AS conformed_host,
+      CASE
+        WHEN referrer IS NULL THEN 'Direct'
+        WHEN referrer LIKE '%stripe%' THEN 'Stripe'
+        WHEN referrer LIKE '%linkedin%' THEN 'LinkedIn'
+        WHEN referrer LIKE '%blog.dataengineer.io%' THEN 'Substack'
+        WHEN referrer LIKE '%tiktok%' THEN 'TikTok'
+        WHEN referrer LIKE '%instagram%' THEN 'Instagram'
+        WHEN referrer LIKE '%t.co%' THEN 'Twitter'
+        WHEN referrer LIKE '%eczachly%' THEN 'On Site'
+        WHEN referrer LIKE '%zachwilson.tech%' THEN 'On Site'
+        WHEN referrer LIKE '%eczachly.com%' THEN 'On Site'
+        ELSE 'Other'
+      END AS conformed_source,
+      DATE(event_time) AS event_date,
+      DATE(DATE_TRUNC('month', event_time)) AS event_month
+    FROM
+      bootcamp.web_events we
+      JOIN bootcamp.devices d ON we.device_id = d.device_id
+  )
+SELECT
+  COALESCE(conformed_host, '(overall)') AS conformed_host,
+  COALESCE(conformed_source, '(overall)') AS conformed_source,
+  COALESCE(browser_type, '(overall)') AS browser_type,
+  COALESCE(os_type, '(overall)') AS os_type,
+  COALESCE(device_type, '(overall)') AS device_type,
+  event_date AS event_date,
+  COUNT(DISTINCT user_id) AS unique_users,
+  COUNT(*) AS site_hits,
+  COUNT(
+    CASE
+      WHEN url LIKE '%payment_successful%' THEN 1
+    END
+  ) AS num_successful_payments,
+  COUNT(
+    CASE
+      WHEN url LIKE '%/signup%' THEN 1
+    END
+  ) AS num_signup_visits,
+  COUNT(
+    CASE
+      WHEN url LIKE '%query%' THEN 1
+    END
+  ) AS num_queries_ran,
+  CASE
+    WHEN GROUPING (conformed_host) = 0
+    AND GROUPING (conformed_source) = 0 THEN 'event_date__host__source'
+    WHEN GROUPING (conformed_host) = 0 THEN 'event_date__host'
+    WHEN GROUPING (conformed_source) = 0 THEN 'event_date__source'
+    WHEN GROUPING (browser_type) = 0 THEN 'event_date__browser_type__device_type__os_type'
+    ELSE 'event_date'
+  END AS aggregation_level
+FROM
+  conformed
+GROUP BY
+  GROUPING SETS (
+    (event_date),
+    (conformed_host, event_date),
+    (conformed_source, event_date),
+    (conformed_host, conformed_source, event_date),
+    (browser_type, os_type, device_type, event_date)
+  )
