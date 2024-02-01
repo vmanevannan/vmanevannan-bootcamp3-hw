@@ -9,7 +9,6 @@ My initial goal was getting to know the grad community since I was moving to a n
 
 Over time, I've had experience with LinkedIn premium features, random messages from recruiters and sales/marketing professionals and LinkedIn learning platform.
 My frequency of interaction with all these features have been intermittent.
-[Write down the evolution of your interactions, and the degree to which you've used this product over history. How have you interacted with this product over time?]
 
 ## Experiments
 
@@ -17,24 +16,38 @@ In this section, you'll specify tests and hypotheses for new features on your pr
 
 ### Experiment 1
 
-Changes: [Add Label for recruiter] 'Expert recruiter' something like AirBnB's 'Super Host' 
+Changes: Add Label for recruiter: 'Expert recruiter' something like AirBnB's 'Super Host' 
 
 Hypothesis: The label attracts more job-candidates to Expert recruiter's LinkedIn profile/DMs.
 
 Test cell allocation:
 
 - Control (no feature) - [50 %  LinkedIn users who are open to work ]
-- [Expert Recruiter label on] - [50% LinkedIn users who are open to work]
+- Expert Recruiter label on - [50% LinkedIn users who are open to work]
 
 
 Leading Metrics:
-- Closed Loop in conversation with job applicant.
-- Correlation between candidate's change in job status to DMs with recruiter.
-- Monitor if candidate clicked 'Applied for job' after conversation/visit to recruiter's LinkedIn page.
+- Recruiter Response Rate
+ The percentage of candidates who closed the loop in conversation with the recruiter over this time window of badge addition
+  to number of job applicants
+  Definition: #(candidates who received a response from the recruiter within the time window) / Total number of candidates who applied for the job x 100
+  Rationale: Capture the correlation between candidate's application to DMs with recruiter.
+- Quality of candidate pipeline
+  The percentage of converted job applicants over applicants to the job posting.
+  Definition: sum(boolean flag confirming conversion from application to interview) / sum(number of candidates who applied for the job) x 100
+  Rationale: Capture the correlation between quality candidates being attracted to expert recruiter's profile.
+
+
 
 Lagging Metrics:
--  Expert recruiter badge may attract more clicks 
--  Greater traffic on expert recruiter's LinkedIn profile.
+- Engagement Rate
+  The ratio of visits to job posting after applying the badge to clicks before applying the badge
+  n_visits_after_badge/n_visits_before_badge
+  Rationale:Expert recruiter badge may attract more clicks 
+- Time_to_fill
+  The ratio of time to fill job posting after applying the badge to time to fill before applying the badge
+  avg(n_days_to_fill_position_after_badge)/avg(n_days_to_fill_position_before_badge)
+  Rationale: Is the time taken to fill a vacancy affected by an expert recruiter's LinkedIn profile.
 
 ### Experiment 2
 
